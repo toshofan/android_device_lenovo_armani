@@ -94,7 +94,7 @@ persist.sys.usb.config=mtp,adb
 ro.vold.umsdirtyratio=30
 
 # WiFi Atheros 600x
-wifi.interface=wlan0
+wifi.interface=eth0
 wifi.supplicant_scan_interval=60
 ro.confg.hw_appfsversion=d9V4_4_SYSIMG
 ro.confg.hw_appsbootversion=d9V4_4_APPSBOOT
