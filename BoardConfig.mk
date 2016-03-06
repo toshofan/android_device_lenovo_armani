@@ -72,8 +72,8 @@ TARGET_KERNEL_CONFIG := cyanogenmod_audi_defconfig
 BOARD_KERNEL_CMDLINE := androidboot.hardware=qcom androidboot.selinux=permissive user_debug=31 debug ignore_loglevel hack_lcd=1 chg_hack_lcd=0 pmemlog=3 reboot=2
 BOARD_KERNEL_PAGESIZE := 4096
 TARGET_KERNEL_CUSTOM_TOOLCHAIN := ~/arm-linux-gnueabi-linaro_4.7.4-2014.06/bin/arm-eabi-
-#BOARD_KERNEL_BASE := 0x00000000
-#BOARD_MKBOOTIMG_ARGS := --kernel_offset 0x00200000 --ramdisk_offset 0x01500000
+BOARD_KERNEL_BASE := 0x10000000
+BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x11000000
 
 # Partitions
 BOARD_SYSTEMIMAGE_PARTITION_SIZE := 571859200

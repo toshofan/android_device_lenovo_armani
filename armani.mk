@@ -93,6 +93,7 @@ PRODUCT_PACKAGES += libstlport
 PRODUCT_PACKAGES += libcnefeatureconfig
 PRODUCT_PACKAGES += libwpa_client
 PRODUCT_PACKAGES += hostapd
+PRODUCT_PACKAGES += btmac
 PRODUCT_PACKAGES += dhcpcd.conf
 PRODUCT_PACKAGES += wpa_supplicant
 PRODUCT_PACKAGES += wpa_supplicant.conf

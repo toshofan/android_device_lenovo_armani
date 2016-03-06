@@ -302,6 +302,10 @@ service hwmac /system/bin/hwmac
     class main
     oneshot
 
+service btmac /system/bin/btmac
+     class main
+     oneshot
+
 service rmt_oeminfo /system/bin/rmt_oeminfo
     class core
 
