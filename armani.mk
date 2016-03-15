@@ -33,7 +33,8 @@ PRODUCT_PACKAGES += viewmem
 PRODUCT_PACKAGES += fstab.qcom
 PRODUCT_PACKAGES += init.qcom.rc
 PRODUCT_PACKAGES += init.qcom.usb.rc
-PRODUCT_PACKAGES += init.target.rc
+PRODUCT_PACKAGES += init.sensors.rc
+PRODUCT_PACKAGES += init.device.rc
 PRODUCT_PACKAGES += ueventd.qcom.rc
 PRODUCT_PACKAGES += init.qcom.ril.sh
 
@@ -43,6 +44,7 @@ PRODUCT_PACKAGES += device/lenovo/armani/rootdir/init.qcom.rc:root/init.qcom.rc
 PRODUCT_PACKAGES += device/lenovo/armani/rootdir/init.qcom.usb.rc:root/init.qcom.usb.rc
 PRODUCT_PACKAGES += device/lenovo/armani/rootdir/init.target.rc:root/init.target.rc
 PRODUCT_PACKAGES += device/lenovo/armani/rootdir/ueventd.qcom.rc:root/ueventd.qcom.rc
+PRODUCT_PACKAGES += device/lenovo/armani/rootdir/init.sensors.rc:root/init.sensors.rc
 PRODUCT_PACKAGES += device/lenovo/armani/rootdir/init.qcom.ril.sh:root/init.qcom.ril.sh
 
 # Torch
@@ -52,7 +54,6 @@ PRODUCT_PACKAGES += Torch
 PRODUCT_PACKAGES += audio.a2dp.default
 PRODUCT_PACKAGES += audio.primary.msm7x27a
 PRODUCT_PACKAGES += audio.usb.default
-PRODUCT_PACKAGES += audio_policy.msm7x27a
 PRODUCT_PACKAGES += libaudioutils
 
 PRODUCT_PACKAGES += libgenlock
@@ -150,9 +151,112 @@ PRODUCT_COPY_FILES += frameworks/native/data/etc/handheld_core_hardware.xml:syst
 PRODUCT_PACKAGES += frameworks/native/data/etc/android.hardware.telephony.gsm.xml:system/etc/permissions/android.hardware.telephony.gsm.xml
 PRODUCT_PACKAGES += frameworks/native/data/etc/android.hardware.touchscreen.multitouch.jazzhand.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.jazzhand.xml
 
+# Properties
+PRODUCT_PROPERTY_OVERRIDES += \
+    headset.hook.delay=500
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.bluetooth.remote.autoconnect=true \
+    ro.bluetooth.request.master=true \
+    ro.bt.bdaddr_path=/data/misc/bluedroid/bdaddr \
+    ro.qualcomm.bluetooth.dun=true \
+    ro.qualcomm.bluetooth.ftp=true
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    debug.egl.recordable.rgba8888=1 \
+    debug.composition.type=dyn \
+    debug.hwc.dynThreshold=1.9 \
+    persist.hwc.mdpcomp.enable=false \
+    debug.mdpcomp.logs=0 \
+    debug.gralloc.map_fb_memory=1 \
+    debug.hwc.fakevsync=1 \
+    ro.max.fling_velocity=4000 \
+    ro.opengles.version=131072 \
+    ro.sf.lcd_density=240
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    com.qc.hardware=true \
+    dev.pm.dyn_sample_period=700000 \
+    dev.pm.dyn_samplingrate=1 \
+    ro.vendor.extension_library=/system/lib/libqc-opt.so
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.vold.umsdirtyratio=30
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    wifi.interface=eth0 
+
+# Audio
+PRODUCT_PROPERTY_OVERRIDES += \
+    audio.gapless.playback.disable=true \
+    audio.offload.disable=1
+
+# Wifi
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.disableWifiApFirmwareReload=true
+
+# Low RAM
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.config.low_ram=true \
+    config.disable_atlas=true \
+    persist.sys.force_highendgfx=true \
+    ro.config.max_starting_bg=6 \
+    ro.sys.fw.bg_apps_limit=8
+
+# Strict mode
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.sys.strictmode.visual=0 \
+    persist.sys.strictmode.disable=1
+
+# FM Radio
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.fm.analogpath.supported=false \
+    ro.fm.transmitter=false \
+    ro.fm.mulinst.recording.support=false
+
+# Stagefright
+PRODUCT_PROPERTY_OVERRIDES += \
+   media.stagefright.enable-player=true \
+   media.stagefright.enable-meta=false \
+   media.stagefright.enable-scan=true \
+   media.stagefright.enable-http=true \
+   media.stagefright.enable-fma2dp=true \
+   media.stagefright.enable-aac=true \
+   media.stagefright.enable-qcp=true
+
+PRODUCT_PROPERTY_OVERRIDES += \
+   mm.enable.smoothstreaming=true
+
+# Newer camera API isn't supported.
+PRODUCT_PROPERTY_OVERRIDES += \
+   camera2.portability.force_api=1
+
+# Use ART small mode
+PRODUCT_PROPERTY_OVERRIDES += \
+   dalvik.vm.dex2oat-filter=balanced \
+   dalvik.vm.dex2oat-flags=--no-watch-dog \
+   dalvik.vm.image-dex2oat-filter=speed \
+   dalvik.vm.dex2oat-swap=false
+
+# ART properties
+ADDITIONAL_DEFAULT_PROPERTIES += \
+   dalvik.vm.dex2oat-Xms=8m \
+   dalvik.vm.dex2oat-Xmx=96m \
+   dalvik.vm.image-dex2oat-Xms=48m \
+   dalvik.vm.image-dex2oat-Xmx=48m
+
+# Allow ADB by default
+ADDITIONAL_DEFAULT_PROPERTIES += \
+   ro.secure=0 \
+   ro.adb.secure=0
+
+PRODUCT_PROPERTY_OVERRIDES += \
+   persist.sys.root_access=3
+
+
 #$(call inherit-product, $(SRC_TARGET_DIR)/product/full.mk)
 
-$(call inherit-product, frameworks/native/build/phone-hdpi-512-dalvik-heap.mk)
+$(call inherit-product, frameworks/native/build/phone-hdpi-dalvik-heap.mk)
 
 $(call inherit-product, vendor/lenovo/armani/common-vendor.mk)
 $(call inherit-product, vendor/lenovo/armani/armani-vendor.mk)

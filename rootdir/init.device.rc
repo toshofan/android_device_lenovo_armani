@@ -26,23 +26,15 @@
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
+on post-fs
+    exec /system/bin/sh /system/etc/init.qcom.thermald_conf.sh
+
 on init
     # framebuffer pls... :(
     write /sys/module/msm_fb/parameters/align_buffer 1
 
-#service rmt_storage /system/bin/rmt_storage
-#    class core
-#    user root
-#    disabled
-
-#service rmt_storage /system/bin/rmt_storage emmc@modem_st1 emmc@modem_st2 emmc@ap_config
-#    class core
-    
-service rmt_storage /system/bin/rmt_storage /dev/block/mmcblk0p9 /dev/block/mmcblk0p10 /dev/block/mmcblk0p12
+service rmt_storage /system/bin/rmt_storage /dev/block/mmcblk0p9 /dev/block/mmcblk0p10 /dev/block/mmcblk0p14
     class core
-
-#on property:ro.boot.emmc=true
-#    start rmt_storage    
 
 service hostapd /system/bin/hostapd -dddd /data/misc/wifi/hostapd.conf
     class late_start
@@ -73,38 +65,36 @@ service p2p_supplicant /system/bin/wpa_supplicant -ddd \
     disabled
     oneshot
 
-service wlan_detect /system/bin/wlan_detect
-    class main
-    user root
-    group root
-    oneshot
-
 service gps_check /system/bin/gps_check
     class main
     user root
     group root
     oneshot
 
-on property:persist.sys.thermal.monitor=1
-    start thermald
+service akm8963 /system/bin/akmd8963
+    class main
+    disabled
+    oneshot
 
-on property:persist.sys.thermal.monitor=0
-    stop thermald
-
-#service qosmgrd /system/bin/qosmgr /system/etc/qosmgr_rules.xml
-#    user system
-#    group system
-#    disabled
+service compassd /system/bin/compassd
+    class main
+    disabled
+    oneshot
 
 service mpdecision /system/bin/mpdecision --no_sleep --avg_comp
     class late_start
-    disabled
     user root
 
 service thermald /system/bin/thermald
     class late_start
     user root
     group root
+
+on property:persist.sys.thermal.monitor=1
+    start thermald
+
+on property:persist.sys.thermal.monitor=0
+    stop thermald
 
 service gpu_dcvsd /system/bin/gpu_dcvsd
     class late_start

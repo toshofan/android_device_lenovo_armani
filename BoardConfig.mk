@@ -25,14 +25,13 @@ USE_CAMERA_STUB := false
 # Inherit from the proprietary version
 -include vendor/armani/BoardConfigVendor.mk
 
-BOARD_VENDOR := jsr-qcom
+BOARD_VENDOR := lenovo
 
 # Assert
-TARGET_OTA_ASSERT_DEVICE := msm8625
+#TARGET_OTA_ASSERT_DEVICE := msm8625
 
-# Compile sys
-#TARGET_GCC_VERSION_EXP := 4.8
-DISABLE_DEXPREOPT := true
+# Compile
+KERNEL_TOOLCHAIN_PREFIX := $(ANDROID_BUILD_TOP)/prebuilts/gcc/linux-x86/arm/arm-linux-gnueabi-linaro_4.7.4-2014.06/bin/arm-eabi-
 TARGET_SPECIFIC_HEADER_PATH := device/lenovo/armani/include
 
 # Compiler flags
@@ -69,21 +68,22 @@ ARCH_ARM_HAVE_32_BYTE_CACHE_LINES := true
 # Kernel
 TARGET_KERNEL_SOURCE := kernel/audi_armani
 TARGET_KERNEL_CONFIG := cyanogenmod_audi_defconfig
-BOARD_KERNEL_CMDLINE := androidboot.hardware=qcom androidboot.selinux=permissive user_debug=31 debug ignore_loglevel hack_lcd=1 chg_hack_lcd=0 pmemlog=3 reboot=2
+BOARD_KERNEL_CMDLINE := androidboot.hardware=qcom androidboot.selinux=permissive chg_hack_lcd=0
 BOARD_KERNEL_PAGESIZE := 4096
-TARGET_KERNEL_CUSTOM_TOOLCHAIN := ~/arm-linux-gnueabi-linaro_4.7.4-2014.06/bin/arm-eabi-
 BOARD_KERNEL_BASE := 0x10000000
 BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x11000000
 
 # Partitions
-BOARD_SYSTEMIMAGE_PARTITION_SIZE := 571859200
-BOARD_USERDATAIMAGE_PARTITION_SIZE := 984961024
+TARGET_USERIMAGES_USE_EXT4 := true
+BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
+
+BOARD_BOOTIMAGE_PARTITION_SIZE := 13901824
+BOARD_CACHEIMAGE_PARTITION_SIZE := 125829120
 BOARD_RECOVERYIMAGE_PARTITION_SIZE := 13901824
-BOARD_CACHEIMAGE_PARTITION_SIZE := 104857600
+BOARD_SYSTEMIMAGE_PARTITION_SIZE := 996147200
+BOARD_USERDATAIMAGE_PARTITION_SIZE := 982515712
 
 BOARD_FLASH_BLOCK_SIZE := 131072
-
-TARGET_USERIMAGES_USE_EXT4 := true
 
 BOARD_CACHE_DEVICE := /dev/block/mmcblk0p18
 BOARD_CACHE_FILESYSTEM := ext4
@@ -97,14 +97,10 @@ BOARD_DATA_DEVICE := /dev/block/mmcblk0p21
 BOARD_DATA_FILESYSTEM := ext4
 BOARD_DATA_FILESYSTEM_OPTIONS := rw
 
-# Dalvik
-TARGET_ARCH_LOWMEM := true
-
 # Charger
 BOARD_CHARGER_SHOW_PERCENTAGE := true
 
 # Low RAM settings
-MALLOC_IMPL := dlmalloc
 TARGET_BOOTANIMATION_TEXTURE_CACHE := false
 AUDIO_FEATURE_ENABLED_INCALL_MUSIC := false
 AUDIO_FEATURE_ENABLED_COMPRESS_VOIP := false
@@ -157,9 +153,6 @@ COMMON_GLOBAL_CFLAGS += -DRIL_SUPPORTS_SEEK
 COMMON_GLOBAL_CFLAGS += -DRIL_VARIANT_LEGACY
 BOARD_RIL_CLASS := ../../../device/lenovo/armani/ril/
 
-# Hardware
-BOARD_HARDWARE_CLASS := device/lenovo/armani/cmhw
-
 # Lights
 TARGET_PROVIDES_LIBLIGHT := true
 
@@ -172,9 +165,9 @@ COMMON_GLOBAL_CFLAGS += -DLPA_DEFAULT_BUFFER_SIZE=480
 # SELinux
 BOARD_SEPOLICY_DIRS += device/lenovo/armani/sepolicy
 
-# USB
+# Vold
 BOARD_VOLD_EMMC_SHARES_DEV_MAJOR := true
-BOARD_VOLD_MAX_PARTITIONS := 31
+BOARD_VOLD_MAX_PARTITIONS := 22
 TARGET_USE_CUSTOM_LUN_FILE_PATH := /sys/class/android_usb/android0/f_mass_storage/lun%d/file
 TARGET_USE_CUSTOM_SECOND_LUN_NUM := 1
 
@@ -216,10 +209,11 @@ WIFI_DRIVER_MODULE_PATH := "/system/lib/modules/ath6kl_sdio.ko"
 WIFI_DRIVER_MODULE_NAME := "ath6kl_sdio"
 WIFI_EXT_MODULE_PATH := "/system/lib/modules/cfg80211.ko"
 WIFI_EXT_MODULE_NAME := "cfg80211"
+WIFI_DRIVER_FW_PATH_PARAM := "/data/misc/wifi/fwpath"
 
 # Enable dex-preoptimization to speed up first boot sequence
 ifeq ($(HOST_OS),linux)
-  ifeq ($(TARGET_BUILD_VARIANT),userdebug)
+  ifeq ($(TARGET_BUILD_VARIANT),user)
     ifeq ($(WITH_DEXPREOPT),)
 #      WITH_DEXPREOPT := true
     endif
@@ -228,14 +222,14 @@ endif
 WITH_DEXPREOPT_PIC := true
 DONT_DEXPREOPT_PREBUILTS := true
 
-# Final ZIP type
-BLOCK_BASED_OTA := false
-
 # Include an expanded selection of fonts
 EXTENDED_FONT_FOOTPRINT := true
 
 # Enable Minikin text layout engine (will be the default soon)
 USE_MINIKIN := true
- 
+
+# Final ZIP type
+BLOCK_BASED_OTA := false
+
 STRICT_ALIASING := false
 SUPPRESS_UNUSED_WARNING := true
