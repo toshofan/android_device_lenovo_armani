@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2012, The Linux Foundation.
+# Copyright (c) 2011-2012, Code Aurora Forum.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ key 65    MEDIA_PLAY_PAUSE      WAKE
 key 66    MEDIA_PREVIOUS        WAKE
 key 67    MEDIA_STOP            WAKE
 key 212   CAMERA
+key 528   FOCUS
 key 87    POWER                 WAKE
 key 217   SEARCH                WAKE_DROPPED
 

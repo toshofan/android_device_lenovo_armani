@@ -21,8 +21,10 @@
      for different hardware and product builds. -->
 <resources>
     <!-- If there is no sysfs-based control mechanism, enable this -->
-    <bool name="useCameraInterface">true</bool>
+    <bool name="useCameraInterface">false</bool>
 
+    <!-- Full path to the sysfs toggle -->
+    <string name="flashDevice">/proc/CTP_FLASH_CTRL</string>
     <!-- Full path to the sysfs luminosity -->
     <string name="flashDeviceLuminosity"></string>
 

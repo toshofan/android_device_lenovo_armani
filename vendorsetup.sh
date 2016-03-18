@@ -8,6 +8,8 @@ add_lunch_combo cm_armani-user dist
 sh device/lenovo/armani/patches/apply.sh
 croot
 
+sh device/lenovo/armani/update-overlay.sh
+
 rm -rf out/target/product/armani/obj/PACKAGING/target_files_intermediates
 rm -f out/target/product/armani/system/build.prop
 rm -f out/target/product/armani/root/default.prop 
